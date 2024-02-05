@@ -79,3 +79,48 @@ export async function createPost(
     revalidatePath('/')
     redirect('/')
 }
+
+export async function updatePost(
+    id: string,
+    formState: PostFormState,
+    formData: FormData
+): Promise<PostFormState> {
+    const result = postSchema.safeParse({
+        title: formData.get('title'),
+        content: formData.get('content'),
+    })
+
+    if (!result.success) {
+        return {
+            errors: result.error.flatten().fieldErrors
+        }
+    }
+
+    let post: Post
+    try {
+        post = await db.post.update({
+            where: {id},
+            data: {
+                title: result.data.title,
+                content: result.data.content,
+            }
+        })
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            return {
+                errors: {
+                    _form: [error.message],
+                },
+            }
+        } else {
+            return {
+                errors: {
+                    _form: ['Something went wrong'],
+                },
+            }
+        }
+    }
+
+    revalidatePath('/')
+    redirect('/')
+}
