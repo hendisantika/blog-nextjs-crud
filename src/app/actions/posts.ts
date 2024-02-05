@@ -24,3 +24,58 @@ interface PostFormState {
         _form?: string[],
     }
 }
+
+// Define an asynchronous function to create a post
+export async function createPost(
+    formState: PostFormState,
+    formData: FormData
+): Promise<PostFormState> {
+    // Validate the form data against the post schema
+    // If the form data does not match the schema, the safeParse method returns an object
+    // with a success property of false and an error property containing the validation errors.
+    // If the form data matches the schema, the safeParse method returns an object
+    // with a success property of true and a data property containing the validated data.
+    const result = postSchema.safeParse({
+        title: formData.get('title'),
+        content: formData.get('content'),
+    })
+
+    // If validation fails, return the errors
+    if (!result.success) {
+        return {
+            // The flatten method is used to convert the validation errors into a flat object structure
+            // that can be easily displayed in the form.
+            errors: result.error.flatten().fieldErrors
+        }
+    }
+
+    let post: Post
+    try {
+        // If validation passes, create a new post in the database
+        post = await db.post.create({
+            data: {
+                title: result.data.title,
+                content: result.data.content,
+            }
+        })
+    } catch (error: unknown) {
+        // If there's an error, return it
+        if (error instanceof Error) {
+            return {
+                errors: {
+                    _form: [error.message],
+                },
+            }
+        } else {
+            return {
+                errors: {
+                    _form: ['Something went wrong'],
+                },
+            }
+        }
+    }
+
+    // Revalidate the path and redirect to the home page
+    revalidatePath('/')
+    redirect('/')
+}
