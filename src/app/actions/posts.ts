@@ -124,3 +124,31 @@ export async function updatePost(
     revalidatePath('/')
     redirect('/')
 }
+
+export async function deletePost(
+    id: string,
+): Promise<PostFormState> {
+    let post: Post
+    try {
+        post = await db.post.delete({
+            where: {id},
+        })
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            return {
+                errors: {
+                    _form: [error.message],
+                },
+            }
+        } else {
+            return {
+                errors: {
+                    _form: ['Something went wrong'],
+                },
+            }
+        }
+    }
+
+    revalidatePath('/')
+    redirect('/')
+}
