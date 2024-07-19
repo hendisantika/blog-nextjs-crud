@@ -20,6 +20,39 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
+## Configuration
+
+### Create .env file from .env.example
+
+```
+cp .env.example .env
+```
+
+### Database Integration
+
+1. Open .env file
+2. Create a database and connect it with Next.js by adjusting the `DATABASE_URL` with your own configuration
+
+### Migrate the Database Migration
+
+```
+npx prisma db push
+```
+
+## Installation
+
+### Node Packages
+
+```
+pnpm install
+```
+
+## Run App
+
+```
+pnpm run dev
+```
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
