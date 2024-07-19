@@ -73,3 +73,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 Add New Post
 
 ![Add New Post](img/index.png "Add New Post")
+
+Edit Post
+
+![Edit Post](img/edit.png "Edit Post")
