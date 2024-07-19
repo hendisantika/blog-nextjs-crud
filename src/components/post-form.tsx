@@ -44,7 +44,8 @@ export default function PostForm({formAction, initialData}: PostFormProps) {
                     {
                         formState.errors.title
                         && <div className="text-red-500">
-                            {formState.errors.title?.join(', ')} // Display form errors related to the title field
+                            {formState.errors.title?.join(', ')}
+                            {/*// Display form errors related to the title field*/}
                         </div>
                     }
                 </div>

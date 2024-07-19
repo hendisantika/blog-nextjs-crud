@@ -7,6 +7,10 @@
 
 // Import the Zod library for validation
 import {z} from 'zod'
+import {Post} from "@prisma/client";
+import {db} from "@/db";
+import {revalidatePath} from "next/cache";
+import {redirect} from "next/navigation";
 
 // Define a schema for the post using Zod
 const postSchema = z.object({
